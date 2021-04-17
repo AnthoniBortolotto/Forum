@@ -62,7 +62,7 @@ export default Vue.extend({
         this.abaAtual = 1
     }
     else{
-      this.abaAtual = 0
+        this.abaAtual = 0
     }
   },
   methods: {
