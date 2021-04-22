@@ -25,7 +25,7 @@
       </v-tabs-items>
     </v-card>
     <v-main> </v-main>
-    <v-footer color="cyan" class="d-flex justify-center mb-6">
+    <v-footer color="secondary" class="d-flex justify-center mb-6">
       {{ new Date().getFullYear() }} | Forum
     </v-footer>
   </v-app>
