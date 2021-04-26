@@ -30,7 +30,8 @@
 
 <script>
 import Vue from "vue";
-import store from '../store/index'
+import store from "../store/index";
+//import Postagem from "../atoms/Postagem";
 export default Vue.extend({
   name: "Home",
   components: {},
@@ -40,20 +41,37 @@ export default Vue.extend({
       autor: String,
       mensagem: String,
       titulo: String,
+      titulos: Array,
       regrasMsg: [
         v => !!v || 'A mensagem é obrigatória',
         v => v.length > 3 || 'A mensagem deve ter mais de 3 caracteres',
         v => v.length < 201 || 'A mensagem deve ter menos de 201 caracteres',
         v => !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) || 'Não é permitido caracteres especiais'
       ],
-      regrasTitulo: [
+      regrasTitulo: Array
+    };
+  },
+  created() {
+     let t = [];
+     this.titulo = "";
+     this.mensagem = "";
+     store.state.Postagens.map((post) => {
+       t.push(post.titulo);
+     })
+     this.titulos = t;
+     console.log(this.titulos);
+     this.regrasTitulo = [
        v => !!v || 'O titulo é obrigatório',
        v => !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) || 'Não é permitido caracteres especiais',
        v => v.length < 21 || 'O titulo deve ter menos de 21 caracteres',
-       v => store.commit('tituloRepetido', v) || 'Já existe uma postagem com esse título'
+       v => this.titulos.indexOf(v) == -1 || 'Já existe uma postagem com esse título'
       ]
-    };
   },
+  methods: {
+     checarTitulo(titulo){
+      return store.commit('tituloRepetido', titulo);
+     }
+  }
 });
 </script>
 
