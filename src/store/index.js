@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     Postagens: [ new Postagem("Anthoni", "Bom dia", "Teremos um bom dia hoje")],
+    aba: Number
   },
   mutations: {
     addPostagem(state, payload) {
@@ -21,6 +22,10 @@ export default new Vuex.Store({
       console.log('Não foi encontrado');
       return true;
     },
+    mudarAba(state, payload){
+      state.aba = payload;
+      console.log('aba eh ' + state.aba);
+    }
     // getters: {
     //   getTitulos: state => {
     //      if(state.Postagens == []) return [];

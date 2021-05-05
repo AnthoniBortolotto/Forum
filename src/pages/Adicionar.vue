@@ -21,7 +21,7 @@
           ></v-text-field>
         </v-col>
         <v-col>
-          <v-btn color="accent" :disabled="!valid">Adicionar</v-btn>
+          <v-btn v-on:click="handlerClick()" color="accent" :disabled="!valid">Adicionar</v-btn>
         </v-col>
       </v-container>
     </v-form>
@@ -30,6 +30,7 @@
 
 <script>
 import Vue from "vue";
+import Postagem from "../atoms/Postagem";
 import store from "../store/index";
 //import Postagem from "../atoms/Postagem";
 export default Vue.extend({
@@ -70,6 +71,11 @@ export default Vue.extend({
   methods: {
      checarTitulo(titulo){
       return store.commit('tituloRepetido', titulo);
+     },
+     handlerClick(){
+       this.$router.push({ path: '/'});
+       store.commit('addPostagem', new Postagem("Paulo", this.titulo, this.mensagem));
+       store.commit('mudarAba', 0);
      }
   }
 });

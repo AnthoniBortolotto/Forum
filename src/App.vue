@@ -6,7 +6,7 @@
           >Forum</v-toolbar-title
         >
         <template v-slot:extension>
-          <v-tabs v-model="abaAtual" right fixed-tabs>
+          <v-tabs v-model="abaStore" right fixed-tabs>
             <v-tabs-slider color="yellow"></v-tabs-slider>
             <v-tab v-for="(aba, index) in abas" @click="atualizarAba(aba.rota)" :key="index">
               {{ aba.nome }}
@@ -15,7 +15,7 @@
         </template>
       </v-toolbar>
 
-      <v-tabs-items v-model="abaAtual">
+      <v-tabs-items v-model="abaStore">
         <v-tab-item :key="0">
           <Home />
         </v-tab-item>
@@ -24,7 +24,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-    <v-main> </v-main>
+    <v-main></v-main>
     <v-footer color="secondary" class="d-flex justify-center mb-6">
       {{ new Date().getFullYear() }} | Forum
     </v-footer>
@@ -35,6 +35,7 @@
 import Vue from "vue";
 import Home from "./pages/Home.vue";
 import Adicionar from "./pages/Adicionar.vue";
+import store from "./store/index";
 
 export default Vue.extend({
   name: "App",
@@ -44,7 +45,6 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      abaAtual: 0,
       abas: [
         {
           nome: "Home",
@@ -58,16 +58,20 @@ export default Vue.extend({
     };
   },
   mounted() {
-    if(window.location.href === 'http://localhost:8080/adicionar'){
-        this.abaAtual = 1
-    }
-    else{
-        this.abaAtual = 0
-    }
+    if(window.location.href === 'http://localhost:8080/adicionar')store.commit('mudarAba', 1);
+    else store.commit('mudarAba', 0);
+    
   },
   methods: {
     atualizarAba: function (rota) {
         this.$router.push({ path: rota})
+        if(rota == "/") store.commit('mudarAba', 0);
+        else store.commit('mudarAba', 1);
+      }
+    },
+    computed: {
+      abaStore(){
+         return store.state.aba;
       }
     }
   });
