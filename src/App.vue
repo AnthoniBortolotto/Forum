@@ -6,7 +6,7 @@
           >Forum</v-toolbar-title
         >
         <template v-slot:extension>
-          <v-tabs v-model="abaStore" right fixed-tabs>
+          <v-tabs :value.sync="abaStore" right fixed-tabs>
             <v-tabs-slider color="yellow"></v-tabs-slider>
             <v-tab v-for="(aba, index) in abas" @click="atualizarAba(aba.rota)" :key="index">
               {{ aba.nome }}
@@ -15,7 +15,7 @@
         </template>
       </v-toolbar>
 
-      <v-tabs-items v-model="abaStore">
+      <v-tabs-items :value.sync="abaStore">
         <v-tab-item :key="0">
           <Home />
         </v-tab-item>

@@ -60,7 +60,6 @@ export default Vue.extend({
        t.push(post.titulo);
      })
      this.titulos = t;
-     console.log(this.titulos);
      this.regrasTitulo = [
        v => !!v || 'O titulo é obrigatório',
        v => !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) || 'Não é permitido caracteres especiais',
