@@ -54,6 +54,10 @@ export default Vue.extend({
           nome: "Adicionar",
           rota: "/adicionar",
         },
+        {
+          nome: "Conta",
+          rota: "/conta",
+        }
       ],
     };
   },
