@@ -12,16 +12,21 @@
           ></v-text-field>
         </v-col>
         <v-col>
-          <v-text-field
+          <v-textarea
+            rows="4"
+            auto-grow
+            outlined
             v-model="mensagem"
             :rules="regrasMsg"
-            :counter="200"
+            :counter="500"
             label="Mensagem"
             required
-          ></v-text-field>
+          ></v-textarea>
         </v-col>
         <v-col>
-          <v-btn v-on:click="handlerClick()" color="accent" :disabled="!valid">Adicionar</v-btn>
+          <v-btn v-on:click="handlerClick()" color="accent" :disabled="!valid"
+            >Adicionar</v-btn
+          >
         </v-col>
       </v-container>
     </v-form>
@@ -44,41 +49,51 @@ export default Vue.extend({
       titulo: String,
       titulos: Array,
       regrasMsg: [
-        v => !!v || 'A mensagem é obrigatória',
-        v => v.length > 3 || 'A mensagem deve ter mais de 3 caracteres',
-        v => v.length < 201 || 'A mensagem deve ter menos de 201 caracteres',
-        v => !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) || 'Não é permitido caracteres especiais'
+        (v) => !!v || "A mensagem é obrigatória",
+        (v) => v.length > 3 || "A mensagem deve ter mais de 3 caracteres",
+        (v) => v.length < 201 || "A mensagem deve ter menos de 201 caracteres",
+        (v) =>
+          !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) ||
+          "Não é permitido caracteres especiais",
       ],
-      regrasTitulo: Array
+      regrasTitulo: Array,
     };
   },
   created() {
-     let t = [];
-     this.titulo = "";
-     this.mensagem = "";
-     store.state.Postagens.map((post) => {
-       t.push(post.titulo);
-     })
-     this.titulos = t;
-     this.regrasTitulo = [
-       v => !!v || 'O titulo é obrigatório',
-       v => !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) || 'Não é permitido caracteres especiais',
-       v => v.length < 21 || 'O titulo deve ter menos de 21 caracteres',
-       v => this.titulos.indexOf(v) == -1 || 'Já existe uma postagem com esse título'
-      ]
+    let t = [];
+    this.titulo = "";
+    this.mensagem = "";
+    store.state.Postagens.map((post) => {
+      t.push(post.titulo);
+    });
+    this.titulos = t;
+    this.regrasTitulo = [
+      (v) => !!v || "O titulo é obrigatório",
+      (v) =>
+        !/[^a-z0-9 A-Zãâõêáéíóúàç.,:;?!]+/.test(v) ||
+        "Não é permitido caracteres especiais",
+      (v) => v.length < 21 || "O titulo deve ter menos de 21 caracteres",
+      (v) =>
+        this.titulos.indexOf(v) == -1 ||
+        "Já existe uma postagem com esse título",
+    ];
   },
   methods: {
-     checarTitulo(titulo){
-      return store.commit('tituloRepetido', titulo);
-     },
-     handlerClick(){
-       this.$router.push({ path: '/'});
-       store.commit('addPostagem', new Postagem("Paulo", this.titulo, this.mensagem));
-       store.commit('mudarAba', 0);
-     }
-  }
+    checarTitulo(titulo) {
+      return store.commit("tituloRepetido", titulo);
+    },
+    handlerClick() {
+      this.$router.push({ path: "/" });
+      store.commit(
+        "addPostagem",
+        new Postagem("Paulo", this.titulo, this.mensagem)
+      );
+      this.titulo = "";
+      this.mensagem = "";
+      store.commit("mudarAba", 0);
+    },
+  },
 });
 </script>
 
-<style>
-</style>
+<style></style>
