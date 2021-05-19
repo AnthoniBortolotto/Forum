@@ -9,7 +9,7 @@
           <v-tabs :value.sync="abaStore" right fixed-tabs>
             <v-tabs-slider color="yellow"></v-tabs-slider>
             <v-tab
-              v-for="(aba, index) in abas"
+              v-for="(aba, index) in getAbas"
               @click="atualizarAba(aba.rota)"
               :key="index"
             >
@@ -23,7 +23,7 @@
         <v-tab-item :key="0">
           <Home />
         </v-tab-item>
-        <v-tab-item :key="1">
+        <v-tab-item :key="1" :disabled="getLogado">
           <Adicionar />
         </v-tab-item>
         <v-tab-item :key="2">
@@ -52,24 +52,6 @@ export default Vue.extend({
     Adicionar,
     Conta,
   },
-  data: function () {
-    return {
-      abas: [
-        {
-          nome: "Home",
-          rota: "/",
-        },
-        {
-          nome: "Adicionar",
-          rota: "/adicionar",
-        },
-        {
-          nome: "Conta",
-          rota: "/conta",
-        },
-      ],
-    };
-  },
   mounted() {
     if (window.location.href === "http://localhost:8080/adicionar")
       store.commit("mudarAba", 1);
@@ -79,15 +61,30 @@ export default Vue.extend({
   },
   methods: {
     atualizarAba: function (rota) {
-      this.$router.push({ path: rota });
-      if (rota == "/") store.commit("mudarAba", 0);
-      else if (rota == "/adicionar") store.commit("mudarAba", 1);
-      else store.commit("mudarAba", 2);
+      if (rota == "/") {
+        store.commit("mudarAba", 0);
+        if (window.location.href !== "http://localhost:8080/")
+          this.$router.push({ path: rota });
+      } else if (rota == "/adicionar" && store.state.logado) {
+        store.commit("mudarAba", 1);
+        if (window.location.href !== "http://localhost:8080/adicionar")
+          this.$router.push({ path: rota });
+      } else {
+        store.commit("mudarAba", 2);
+        if (window.location.href !== "http://localhost:8080/conta")
+          this.$router.push({ path: "/conta" });
+      }
     },
   },
   computed: {
     abaStore() {
-      return store.state.aba;
+      return store.state.abaAtiva;
+    },
+    getAbas() {
+      return store.state.abas;
+    },
+    getLogado() {
+      return store.state.logado;
     },
   },
 });

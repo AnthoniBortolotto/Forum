@@ -1,24 +1,31 @@
 <template>
   <v-app>
-    <div class="Login" v-if="!logado">
+    <div class="login" v-if="!getLogado">
       <Login />
+    </div>
+    <div class="gerenciar" v-else>
+      <Gerenciar />
     </div>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
+import Gerenciar from "../molecules/Gerenciar.vue";
 import Login from "../molecules/Login.vue";
 
 export default Vue.extend({
-  components: { Login },
+  components: { Login, Gerenciar },
   data: function () {
-    return {
-      logado: false,
-    };
+    return {};
   },
   mounted() {
-    console.log(this.$cookies.get("ContaWorldForum"));
+    this.$store.commit("checarLogin", this.$cookies.get("ContaWorldForum"));
+  },
+  computed: {
+    getLogado() {
+      return this.$store.state.logado;
+    },
   },
 });
 </script>

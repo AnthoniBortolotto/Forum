@@ -60,6 +60,8 @@ export default Vue.extend({
     };
   },
   created() {
+    if (!store.state.logado)
+      window.location.replace("http://localhost:8080/conta");
     let t = [];
     this.titulo = "";
     this.mensagem = "";

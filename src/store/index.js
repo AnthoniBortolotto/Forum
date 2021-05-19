@@ -7,7 +7,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     Postagens: [new Postagem("Anthoni", "Bom dia", "Teremos um bom dia hoje")],
-    aba: Number,
+    abaAtiva: Number,
+    logado: false,
+    abas: [
+      {
+        nome: "Home",
+        rota: "/",
+      },
+      {
+        nome: "Adicionar",
+        rota: "/adicionar",
+      },
+      {
+        nome: "Conta",
+        rota: "/conta",
+      },
+    ],
   },
   mutations: {
     addPostagem(state, payload) {
@@ -23,7 +38,11 @@ export default new Vuex.Store({
       return true;
     },
     mudarAba(state, payload) {
-      state.aba = payload;
+      state.abaAtiva = payload;
+    },
+    checarLogin(state, payload) {
+      if (payload !== null) state.logado = true;
+      else state.logado = false;
     },
   },
   actions: {},
