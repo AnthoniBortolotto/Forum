@@ -26,6 +26,9 @@
         <v-tab-item :key="1">
           <Adicionar />
         </v-tab-item>
+        <v-tab-item :key="2">
+          <Conta />
+        </v-tab-item>
       </v-tabs-items>
     </v-card>
     <v-main></v-main>
@@ -40,12 +43,14 @@ import Vue from "vue";
 import Home from "./pages/Home.vue";
 import Adicionar from "./pages/Adicionar.vue";
 import store from "./store/index";
+import Conta from "./pages/Conta.vue";
 
 export default Vue.extend({
   name: "App",
   components: {
     Home,
     Adicionar,
+    Conta,
   },
   data: function () {
     return {
@@ -68,13 +73,16 @@ export default Vue.extend({
   mounted() {
     if (window.location.href === "http://localhost:8080/adicionar")
       store.commit("mudarAba", 1);
-    else store.commit("mudarAba", 0);
+    else if (window.location.href === "http://localhost:8080/")
+      store.commit("mudarAba", 0);
+    else store.commit("mudarAba", 2);
   },
   methods: {
     atualizarAba: function (rota) {
       this.$router.push({ path: rota });
       if (rota == "/") store.commit("mudarAba", 0);
-      else store.commit("mudarAba", 1);
+      else if (rota == "/adicionar") store.commit("mudarAba", 1);
+      else store.commit("mudarAba", 2);
     },
   },
   computed: {
