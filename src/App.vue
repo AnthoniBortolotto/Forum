@@ -8,7 +8,11 @@
         <template v-slot:extension>
           <v-tabs :value.sync="abaStore" right fixed-tabs>
             <v-tabs-slider color="yellow"></v-tabs-slider>
-            <v-tab v-for="(aba, index) in abas" @click="atualizarAba(aba.rota)" :key="index">
+            <v-tab
+              v-for="(aba, index) in abas"
+              @click="atualizarAba(aba.rota)"
+              :key="index"
+            >
               {{ aba.nome }}
             </v-tab>
           </v-tabs>
@@ -57,26 +61,26 @@ export default Vue.extend({
         {
           nome: "Conta",
           rota: "/conta",
-        }
+        },
       ],
     };
   },
   mounted() {
-    if(window.location.href === 'http://localhost:8080/adicionar')store.commit('mudarAba', 1);
-    else store.commit('mudarAba', 0);
-    
+    if (window.location.href === "http://localhost:8080/adicionar")
+      store.commit("mudarAba", 1);
+    else store.commit("mudarAba", 0);
   },
   methods: {
     atualizarAba: function (rota) {
-        this.$router.push({ path: rota})
-        if(rota == "/") store.commit('mudarAba', 0);
-        else store.commit('mudarAba', 1);
-      }
+      this.$router.push({ path: rota });
+      if (rota == "/") store.commit("mudarAba", 0);
+      else store.commit("mudarAba", 1);
     },
-    computed: {
-      abaStore(){
-         return store.state.aba;
-      }
-    }
-  });
+  },
+  computed: {
+    abaStore() {
+      return store.state.aba;
+    },
+  },
+});
 </script>
