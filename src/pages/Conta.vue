@@ -20,7 +20,10 @@ export default Vue.extend({
     return {};
   },
   mounted() {
-    this.$store.commit("checarLogin", this.$cookies.get("ContaWorldForum"));
+    this.$store.commit(
+      "checarLogin",
+      this.$cookies.get("sessaoContaWorldForum")
+    );
   },
   computed: {
     getLogado() {

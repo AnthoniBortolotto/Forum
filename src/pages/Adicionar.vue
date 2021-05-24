@@ -82,7 +82,7 @@ export default Vue.extend({
   },
   methods: {
     checarTitulo(titulo) {
-      return store.commit("tituloRepetido", titulo);
+      return store.getters.tituloRepetido(titulo);
     },
     handlerClick() {
       this.$router.push({ path: "/" });
