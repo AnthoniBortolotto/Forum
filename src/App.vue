@@ -58,6 +58,8 @@ export default Vue.extend({
     else if (window.location.href === "http://localhost:8080/")
       store.commit("mudarAba", 0);
     else store.commit("mudarAba", 2);
+    console.log(this.$cookies.get("sessaoWorldForum"));
+    this.$store.commit("checarLogin", this.$cookies.get("sessaoWorldForum"));
   },
   methods: {
     atualizarAba: function (rota) {

@@ -28,15 +28,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../pages/Conta.vue"),
   },
-  // {
-  //   path: "/signin",
-  //   name: "CriarConta",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../pages/CriarConta.vue"),
-  // },
+  {
+    path: "/signin",
+    name: "CriarConta",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../molecules/CriarConta.vue"),
+  },
   // {
   //   path: "/gerenciar",
   //   name: "Gerenciar",

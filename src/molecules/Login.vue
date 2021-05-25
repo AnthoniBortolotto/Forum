@@ -10,14 +10,16 @@
             label="Email"
           ></v-text-field>
           <v-text-field v-model="campoSenha" label="Senha"></v-text-field>
-          <v-btn v-on:click="handlerClick()" color="accent" :disabled="false"
-            >Adicionar</v-btn
+          <v-btn v-on:click="handlerLogarBtn()" color="accent" :disabled="false"
+            >Fazer Login</v-btn
           >
         </v-form>
       </v-card-text>
       <v-card-text
         >Não possui uma conta?
-        <a class="text-decoration-underline">Faça uma aqui</a></v-card-text
+        <a v-on:click="handlerCriarConta()" class="text-decoration-underline"
+          >Faça uma aqui</a
+        ></v-card-text
       >
     </v-card>
   </v-app>
@@ -43,7 +45,7 @@ export default Vue.extend({
     this.campoSenha = "";
   },
   methods: {
-    handlerClick() {
+    handlerLogarBtn() {
       let conta = this.$store.getters.checarCampoConta(
         this.campoConta,
         this.campoSenha
@@ -56,10 +58,13 @@ export default Vue.extend({
         while (this.$store.getters.checarSessaoAtiva(hash) === true)
           hash = uuidv4();
         this.$store.commit("adicionarSessao", hash);
-        this.$cookies.set("sessaoWorldForum", hash, "1h");
+        this.$cookies.set("sessaoWorldForum", hash, "1d");
         this.$store.commit("checarLogin", hash);
         this.$store.commit("mudarAba", 0);
       }
+    },
+    handlerCriarConta() {
+      this.$router.push({ path: "/signin" });
     },
   },
   computed: {},

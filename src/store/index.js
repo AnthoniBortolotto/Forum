@@ -37,6 +37,9 @@ export default new Vuex.Store({
       state.abaAtiva = payload;
     },
     checarLogin(state, payload) {
+      console.log(
+        payload !== null && state.sessoesAtivas.includes(payload) === true
+      );
       if (payload !== null && state.sessoesAtivas.includes(payload) === true)
         state.logado = true;
       else state.logado = false;

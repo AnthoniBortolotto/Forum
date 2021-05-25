@@ -17,13 +17,18 @@ import Login from "../molecules/Login.vue";
 export default Vue.extend({
   components: { Login, Gerenciar },
   data: function () {
-    return {};
+    return {
+      criarConta: false,
+    };
+  },
+  created() {
+    if (window.location.href === "http://localhost:8080/signin") {
+      this.criarConta = true;
+    }
   },
   mounted() {
-    this.$store.commit(
-      "checarLogin",
-      this.$cookies.get("sessaoContaWorldForum")
-    );
+    console.log(this.$cookies.get("sessaoWorldForum"));
+    this.$store.commit("checarLogin", this.$cookies.get("sessaoWorldForum"));
   },
   computed: {
     getLogado() {
