@@ -1,14 +1,30 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../pages/Home.vue";
+import store from "../store/index";
+import Callback from "../pages/Callback.vue";
 
 Vue.use(VueRouter);
+// function authCheck(to, from, next) {
+//   if (!isLogged()) {
+//     next({
+//       path: "/", //not authorized path
+//     });
+//   } else {
+//     next({});
+//   }
+// }
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/callback",
+    name: "Callback",
+    component: Callback,
   },
   {
     path: "/adicionar",
@@ -18,6 +34,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../pages/Adicionar.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/conta",
@@ -54,4 +71,25 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.path == "/callback")) {
+    console.log("found /callback");
+    store.dispatch("auth0Authentication");
+    next(false);
+  }
+  let routerAuthCheck = false;
+  if (routerAuthCheck) {
+    store.commit("setAuthorization", true);
+  }
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (routerAuthCheck) {
+      store.commit("setAuthorization", true);
+    } else {
+      router.replace("/"); //pagina login
+    }
+    next({});
+  } else {
+    next();
+  }
+});
 export default router;

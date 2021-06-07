@@ -2,9 +2,14 @@
   <v-app>
     <v-card>
       <v-toolbar color="primary" dark flat>
-        <v-toolbar-title class="justify-space-between text-center"
-          >Forum</v-toolbar-title
-        >
+        <v-container class="justify-space-between">
+          <v-toolbar-title class="text-center">Forum</v-toolbar-title>
+          <v-toolbar-items class="justify-end"
+            ><v-btn class="pa-2" color="secondary" @click="loginClick()"
+              >Login</v-btn
+            ></v-toolbar-items
+          >
+        </v-container>
         <template v-slot:extension>
           <v-tabs :value.sync="abaStore" right fixed-tabs>
             <v-tabs-slider color="yellow"></v-tabs-slider>
@@ -44,6 +49,7 @@ import Home from "./pages/Home.vue";
 import Adicionar from "./pages/Adicionar.vue";
 import store from "./store/index";
 import Conta from "./pages/Conta.vue";
+import { login } from "./plugins/auth";
 
 export default Vue.extend({
   name: "App",
@@ -53,9 +59,9 @@ export default Vue.extend({
     Conta,
   },
   mounted() {
-    if (window.location.href === "http://localhost:8080/adicionar")
+    if (window.location.href === "https://localhost:8080/adicionar")
       store.commit("mudarAba", 1);
-    else if (window.location.href === "http://localhost:8080/")
+    else if (window.location.href === "https://localhost:8080/")
       store.commit("mudarAba", 0);
     else store.commit("mudarAba", 2);
     console.log(this.$cookies.get("sessaoWorldForum"));
@@ -65,17 +71,20 @@ export default Vue.extend({
     atualizarAba: function (rota) {
       if (rota == "/") {
         store.commit("mudarAba", 0);
-        if (window.location.href !== "http://localhost:8080/")
+        if (window.location.href !== "https://localhost:8080/")
           this.$router.push({ path: rota });
       } else if (rota == "/adicionar" && store.state.logado) {
         store.commit("mudarAba", 1);
-        if (window.location.href !== "http://localhost:8080/adicionar")
+        if (window.location.href !== "https://localhost:8080/adicionar")
           this.$router.push({ path: rota });
       } else {
         store.commit("mudarAba", 2);
-        if (window.location.href !== "http://localhost:8080/conta")
+        if (window.location.href !== "https://localhost:8080/conta")
           this.$router.push({ path: "/conta" });
       }
+    },
+    loginClick() {
+      login();
     },
   },
   computed: {

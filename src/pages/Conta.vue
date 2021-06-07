@@ -22,7 +22,7 @@ export default Vue.extend({
     };
   },
   created() {
-    if (window.location.href === "http://localhost:8080/signin") {
+    if (window.location.href === "https://localhost:8080/signin") {
       this.criarConta = true;
     }
   },

@@ -1,14 +1,25 @@
+/* eslint-disable no-unused-vars */
 import Vue from "vue";
 import Vuex from "vuex";
 import Postagem from "../atoms/Postagem";
 import Conta from "../atoms/Conta";
-
+import auth0 from "auth0-js";
+import router from "../router";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     sessoesAtivas: [],
-    Postagens: [new Postagem("Anthoni", "Bom dia", "Teremos um bom dia hoje")],
+    auth0: new auth0.WebAuth({
+      domain: "dev-br9dmv51.us.auth0.com",
+      clientID: "ESUQyTTDNpczBHze0dTRkFjzNjyAcsty",
+      redirectUri: "https://localhost:8080/", //callback
+      responseType: "token id_token",
+      scope: "openid profile",
+    }),
+    Postagens: [
+      new Postagem("Anthoni", 2, "Bom dia", "Teremos um bom dia hoje"),
+    ],
     Contas: [new Conta("Ana", "p", "an")],
     abaAtiva: Number,
     logado: false,
@@ -36,6 +47,9 @@ export default new Vuex.Store({
     mudarAba(state, payload) {
       state.abaAtiva = payload;
     },
+    setAuthorization(state, payload) {
+      state.logado = payload;
+    },
     checarLogin(state, payload) {
       console.log(
         payload !== null && state.sessoesAtivas.includes(payload) === true
@@ -47,6 +61,9 @@ export default new Vuex.Store({
     adicionarSessao(state, payload) {
       state.sessoesAtivas.push(payload);
     },
+    atualizarContas(state) {},
+    atualizarSessao(state) {},
+    atualizarPostagens(state) {},
   },
   getters: {
     teste: () => (linha) => {
@@ -78,6 +95,28 @@ export default new Vuex.Store({
       return true;
     },
   },
-  actions: {},
+  actions: {
+    auth0Login(context) {
+      context.state.auth0.authorize();
+    },
+    auth0Authentication(context) {
+      context.state.auth0.parseHash((err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          let expiresAt = JSON.stringify(
+            authResult.expiresIn * 1000 + new Date().getTime()
+          );
+          localStorage.setItem("access_token", authResult.accessToken);
+          localStorage.setItem("id_token", authResult.idToken);
+          localStorage.setItem("expires_at", expiresAt);
+
+          router.replace("/");
+        } else if (err) {
+          alert("login failed. Error ");
+          router.replace("/conta");
+          console.log(err);
+        }
+      });
+    },
+  },
   modules: {},
 });

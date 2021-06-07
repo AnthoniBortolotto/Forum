@@ -37,6 +37,7 @@
 import Vue from "vue";
 import Postagem from "../atoms/Postagem";
 import store from "../store/index";
+import { handlerAuth } from "../plugins/auth";
 //import Postagem from "../atoms/Postagem";
 export default Vue.extend({
   name: "Home",
@@ -58,6 +59,16 @@ export default Vue.extend({
       ],
       regrasTitulo: Array,
     };
+  },
+  beforeMount() {
+    handlerAuth((error) => {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      console.log("logedin");
+      this.$router.push("/private");
+    });
   },
   created() {
     if (!store.state.logado)
