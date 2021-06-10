@@ -5,8 +5,15 @@
         <v-container class="justify-space-between">
           <v-toolbar-title class="text-center">Forum</v-toolbar-title>
           <v-toolbar-items class="justify-end"
-            ><v-btn class="pa-2" color="secondary" @click="loginClick()"
+            ><v-btn
+              v-if="this.$store.isAuthorized"
+              class="pa-2"
+              color="secondary"
+              @click="loginClick()"
               >Login</v-btn
+            >
+            <v-btn v-else class="pa-2" color="secondary" @click="logoutClick()"
+              >Logout</v-btn
             ></v-toolbar-items
           >
         </v-container>
@@ -49,7 +56,6 @@ import Home from "./pages/Home.vue";
 import Adicionar from "./pages/Adicionar.vue";
 import store from "./store/index";
 import Conta from "./pages/Conta.vue";
-import { login } from "./plugins/auth";
 
 export default Vue.extend({
   name: "App",
@@ -84,7 +90,10 @@ export default Vue.extend({
       }
     },
     loginClick() {
-      login();
+      store.dispatch("auth0Login");
+    },
+    logoutClick() {
+      store.dispatch("auth0Logout");
     },
   },
   computed: {

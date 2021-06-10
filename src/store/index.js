@@ -9,11 +9,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    isAuthorized: false,
     sessoesAtivas: [],
     auth0: new auth0.WebAuth({
       domain: "dev-br9dmv51.us.auth0.com",
       clientID: "ESUQyTTDNpczBHze0dTRkFjzNjyAcsty",
-      redirectUri: "https://localhost:8080/", //callback
+      redirectUri: "https://localhost:8080/callback", //callback
       responseType: "token id_token",
       scope: "openid profile",
     }),
@@ -48,7 +49,7 @@ export default new Vuex.Store({
       state.abaAtiva = payload;
     },
     setAuthorization(state, payload) {
-      state.logado = payload;
+      state.isAuthorized = payload;
     },
     checarLogin(state, payload) {
       console.log(
@@ -98,6 +99,12 @@ export default new Vuex.Store({
   actions: {
     auth0Login(context) {
       context.state.auth0.authorize();
+    },
+    auth0Logout(context) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("expires_at");
+      window.location.href = `dev-br9dmv51.us.auth0.com/v2/logout?returnTo=https://localhost:8080/login&client_id=ESUQyTTDNpczBHze0dTRkFjzNjyAcsty`;
     },
     auth0Authentication(context) {
       context.state.auth0.parseHash((err, authResult) => {

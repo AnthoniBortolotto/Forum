@@ -78,16 +78,22 @@ router.beforeEach((to, from, next) => {
     next(false);
   }
   let routerAuthCheck = false;
-  if (routerAuthCheck) {
-    store.commit("setAuthorization", true);
+  if (
+    localStorage.getItem("access_token") &&
+    localStorage.getItem("id_token") &&
+    localStorage.getItem("expires_at")
+  ) {
+    console.log("local storage found");
+    let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    routerAuthCheck = new Date().getTime() < expiresAt;
   }
+  store.commit("setAuthorization", routerAuthCheck);
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (routerAuthCheck) {
-      store.commit("setAuthorization", true);
+      next();
     } else {
       router.replace("/"); //pagina login
     }
-    next({});
   } else {
     next();
   }

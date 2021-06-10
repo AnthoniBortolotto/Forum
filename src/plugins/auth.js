@@ -1,6 +1,6 @@
 /* import auth0 from "auth0-js";
 import router from "../router"; */
-import store from "../store";
+//import store from "../store";
 
 /* const webAauth = new auth0.WebAuth({
   domain: "dev-br9dmv51.us.auth0.com",
@@ -34,7 +34,7 @@ export const handlerAuth = (cb) => {
   token = {};
 }; */
 
-export const login = () => {
+/* export const login = () => {
   //webAauth.authorize();
   store.dispatch("auth0Login");
-};
+}; */
